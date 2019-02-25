@@ -47,37 +47,38 @@ bool HelloWorld::init()
         for(int cols=0; cols<3; cols++) {
             tiles[filas][cols] = Sprite::create("square.png");
             tiles[filas][cols]->setPosition(Vec2(100+80*filas,100+80*cols));
+            tiles[filas][cols]->setTag(filas*3+cols);
             this->addChild(tiles[filas][cols]);
         }
 
-    
-    
     auto listener1 = EventListenerTouchOneByOne::create();
-    listener1->setSwallowTouches(true);
+    listener1->setSwallowTouches(false);
     listener1->onTouchBegan = [=](Touch* touch, Event* event) {
-        log("onTouchBegan");
-        for (int i=0; i<3; i++)
-            for(int j=0; j<3; j++)
-                if(tiles[i][j]->getBoundingBox().containsPoint(touch->getLocation()))
-                    sel = tiles[i][j];
-        return true;
+        if (event->getCurrentTarget()->getBoundingBox().containsPoint(touch->getLocation())) {
+            sel = (Sprite *)event->getCurrentTarget();
+            return true;
+        }
+        return false;
     };
     
     listener1->onTouchMoved = [=](Touch* touch, Event* event){
         // your code
-        log("onTouchMoved");
         return true;
     };
     
     // trigger when you let up
     listener1->onTouchEnded = [=](Touch* touch, Event* event){
-        // your code
-        sel->setTexture("cross.png");
-        log("onTouchEnd");
-        return true;
+        if (event->getCurrentTarget()->getBoundingBox().containsPoint(touch->getLocation())) {
+            sel->setTexture("cross.png");
+            return true;
+        }
+        return false;
     };
     
-    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener1, this);
+    for (int i=0; i<3; i++)
+        for(int j=0; j<3; j++) {
+            getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener1->clone(), tiles[i][j]);
+        }
 
 
     return true;
