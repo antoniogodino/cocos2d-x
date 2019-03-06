@@ -1,0 +1,31 @@
+{
+    "ios" : {
+        "Facebook" : {
+            "enabled" : true,
+            "debug" : true
+        },
+        "SdkboxAds" : {
+            "enabled" : true,
+            "units" : [
+                "AdColony"
+            ],
+            "placements" : [
+                {
+                    "id" : "jjj",
+                    "units" : [
+                        
+                    ],
+                    "strategy" : "weight"
+                }
+            ]
+        }
+    },
+    "android" : {
+        "Facebook" : {
+            "debug" : false
+        }
+    },
+    "playphone" : [
+        
+    ]
+}
