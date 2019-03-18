@@ -9,6 +9,7 @@
 #include "SimpleAudioEngine.h"
 #include "InfiniteParallax.h"
 #include "HelloWorldScene.h"
+#include "FisScene.h"
 
 USING_NS_CC;
 
@@ -46,14 +47,27 @@ bool MenuScene::init()
     addChild(fondo,-100);
     
     // ME
+    Vector<MenuItem*> MenuItems;
+
+    
     MenuItemFont::setFontSize(50);
-    auto menuItemFirst = MenuItemFont::create("Play", [&](Ref* pSender) {
+    auto menuItemFirst = MenuItemFont::create("Juego Buscaminas", [&](Ref* pSender) {
         auto scene = HelloWorld::createScene();
         Director::getInstance()->replaceScene(scene);
     });
     
-    auto menuCenter = Menu::create(menuItemFirst, NULL);
-    menuCenter->setPosition(Vec2(visibleSize.width/2.0, visibleSize.height/2.0));
+    auto menuItemSecond = MenuItemFont::create("Ejemplo Física", [&](Ref* pSender) {
+        auto scene = FisScene::createScene();
+        Director::getInstance()->replaceScene(scene);
+    });
+    
+    MenuItems.pushBack(menuItemFirst);
+    MenuItems.pushBack(menuItemSecond);
+
+    
+    auto menuCenter = Menu::createWithArray(MenuItems);
+    menuCenter->alignItemsVertically();
+    menuCenter->setPosition(visibleSize/2.0);
     this->addChild(menuCenter, 3);
     
   
